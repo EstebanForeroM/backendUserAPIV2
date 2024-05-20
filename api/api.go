@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/EstebanForeroM/backendUserAPIV2/api/middleware"
 )
 
 type Server struct {
@@ -30,7 +32,7 @@ func (a *Server)InitializeServer(routes... RouteData) error {
 func (a *Server) createServer(mux *http.ServeMux) {
     a.httpServer = &http.Server{
         Addr: ":" + a.port,
-        Handler: mux,
+        Handler: middleware.CorsPolicy(mux),
     }
 }
 
