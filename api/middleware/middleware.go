@@ -1,9 +1,13 @@
 package middleware
 
-import "net/http"
+import (
+	"log"
+	"net/http"
+)
 
 func CorsPolicy(next http.Handler) http.Handler {
     return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        log.Println("Applying CORS policy")
         w.Header().Add("Access-Control-Allow-Origin", "*") // Allow all domains
         w.Header().Add("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
         w.Header().Add("Access-Control-Allow-Headers", "Accept, Authorization, Content-Type, X-CSRF-Token")
