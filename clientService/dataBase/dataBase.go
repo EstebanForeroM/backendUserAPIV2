@@ -153,6 +153,10 @@ func (d *DataBase) GetCart(userId string) (usecases.Cart, error) {
 
     cart, err := d.clientDb.User.Query().Where(user.ID(userId)).QueryCart().Only(ctx)
 
+    if err != nil {
+        return usecases.Cart{}, err
+    }
+
     productsEnt, err := cart.QueryProducts().All(ctx)
 
     if err != nil {
