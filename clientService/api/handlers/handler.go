@@ -21,18 +21,18 @@ func (handler *ClientHandler) GetProductInfo(w http.ResponseWriter, r *http.Requ
     puuid, err := uuid.Parse(idString)
 
     if err != nil {
+        return
         log.Println(err)
         w.WriteHeader(http.StatusBadRequest)
-        return
     }
 
     product, err := usecases.GetProductInfo(&handler.DataBase, puuid)
 
     if err != nil {
+        return
         w.WriteHeader(http.StatusInternalServerError)
         w.Write([]byte("Error getting product info"))
         log.Println(err, " ", puuid)
-        return
     }
 
     w.Header().Set("Content-Type", "application/json")
