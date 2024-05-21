@@ -21,7 +21,9 @@ func (handler *ClientHandler) GetProductInfo(w http.ResponseWriter, r *http.Requ
     puuid, err := uuid.Parse(idString)
 
     if err != nil {
+        log.Println(err)
         w.WriteHeader(http.StatusBadRequest)
+        return
     }
 
     product, err := usecases.GetProductInfo(&handler.DataBase, puuid)
