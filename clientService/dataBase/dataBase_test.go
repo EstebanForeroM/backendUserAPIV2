@@ -59,6 +59,109 @@ func TestAddCartToUser(t *testing.T) {
     }
 }
 
+func TestComplexAddCartToUser(t *testing.T) {
+    d := DataBase{db.NewTestEntConnection(t)} 
+    
+    db.AddTestUser("user_1", d.clientDb)
+
+    err := d.AddCartToUser("user_1")
+
+    if err != nil {
+        t.Error("Error adding cart to user: ", err)
+        return
+    }
+
+    productIDs := []uuid.UUID{uuid.New(), uuid.New()}
+
+    err = d.AddNewProductToCart("user_1", productIDs[0], 10)
+
+    if err != nil {
+        t.Error("Error adding new product to cart: ", err)
+        return
+    }
+
+    err = d.AddProductToCart("user_1", productIDs[0], 10)
+
+    if err != nil {
+        t.Error("Error adding product to cart: ", err)
+        return
+    }
+
+    err = d.AddNewProductToCart("user_1", productIDs[1], 10)
+
+    if err != nil {
+        t.Error("Error adding new product to cart: ", err)
+        return
+    }
+
+    if res, err := d.CartHasProduct("user_1", productIDs[0]); err != nil {
+        t.Error("Error adding new product to cart: ", err, res)
+        return
+    } else if !res {
+        t.Error("Error adding new product to cart: ", res)
+        return
+    }
+
+    err = d.AddOrder("user_1", "myhouse")
+
+    if err != nil {
+        t.Error("Error adding order: ", err)
+        return
+    }
+
+    err = d.DeleteCart("user_1")
+
+    if err != nil {
+        t.Error("Error deleting cart: ", err)
+        return
+    }
+
+    if res, err := d.UserHasCart("user_1"); err != nil {
+        t.Error("Error adding order: ", err, res)
+        return
+    } else if res {
+        t.Error("user shouldn't have cart: ", res)
+        return
+    }
+
+    err = d.AddCartToUser("user_1")
+
+    if err != nil {
+        t.Error("Error adding cart to user: ", err)
+        return
+    }
+
+    err = d.AddNewProductToCart("user_1", productIDs[0], 10)
+
+    if err != nil {
+        t.Error("Error adding new product to cart: ", err)
+        return
+    }
+
+    err = d.AddProductToCart("user_1", productIDs[0], 10)
+
+    if err != nil {
+        t.Error("Error adding product to cart: ", err)
+        return
+    }
+
+    err = d.AddNewProductToCart("user_1", productIDs[1], 10)
+
+    if err != nil {
+        t.Error("Error adding new product to cart: ", err)
+        return
+    }
+
+    if res, err := d.CartHasProduct("user_1", productIDs[0]); err != nil {
+        t.Error("Error adding new product to cart: ", err, res)
+        return
+    } else if !res {
+        t.Error("Error adding new product to cart: ", res)
+        return
+    }
+
+}
+
 func TestAddNewProductToCart(t *testing.T) {
     d := DataBase{db.NewTestEntConnection(t)} 
     

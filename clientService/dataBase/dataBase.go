@@ -2,6 +2,7 @@ package database
 
 import (
 	"context"
+	"errors"
 	"testing"
 
 	usecases "github.com/EstebanForeroM/backendUserAPIV2/clientService/useCases"
@@ -79,6 +80,12 @@ func (d *DataBase) AddNewProductToCart(userId string, productId uuid.UUID, price
 
     if err != nil {
         return err
+    }
+
+    if res, err := d.CartHasProduct(userId, productId); err != nil {
+        return err
+    } else if res {
+        return errors.New("Product already in cart")
     }
 
     product, err := d.clientDb.Product.Create().

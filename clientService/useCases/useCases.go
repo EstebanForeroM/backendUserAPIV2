@@ -43,7 +43,7 @@ func CreateOrder(db ClientDb, userId string, deliveryAdress string) error {
     }
 
     if len(cart.Products) == 0 {
-        return nil
+        return errors.New("Cart is empty")
     }
 
     if err := db.AddOrder(userId, deliveryAdress); err != nil {
@@ -69,6 +69,7 @@ func AddProductToCart(db ClientDb, userId string, productId uuid.UUID) error {
     if res, err := db.UserHasCart(userId); err != nil {
         return err
     } else if !res { 
+        log.Println("Adding cart to user")
         err = db.AddCartToUser(userId)
         if err != nil { return err }
     }
@@ -76,8 +77,10 @@ func AddProductToCart(db ClientDb, userId string, productId uuid.UUID) error {
     if res, err := db.CartHasProduct(userId, productId); err != nil {
         return err
     } else if res { 
+        log.Println("Product already in cart")
         return db.AddProductToCart(userId, productId, productInfo.Price)
     } else {
+        log.Println("Product not in cart, so adding a new one")
         return db.AddNewProductToCart(userId, productId, productInfo.Price)
     }
 }
