@@ -293,6 +293,7 @@ func getUseCaseOrder(orderEnt *ent.Order) (usecases.Order, error) {
         Status: orderEnt.Status,
         Products: products,
         DeliveryAdress: orderEnt.DeliveryAdress,
+        Date: orderEnt.OrderedAt,
     }, nil
 }
 

@@ -3,6 +3,7 @@ package usecases
 import (
 	"errors"
 	"log"
+	"time"
 
 	productapi "github.com/EstebanForeroM/backendUserAPIV2/productAPI"
 	"github.com/EstebanForeroM/backendUserAPIV2/property"
@@ -119,6 +120,7 @@ type Order struct {
     OrderId uuid.UUID
     Status property.Status
     DeliveryAdress string
+    Date time.Time
     Products []Product
 }
 
