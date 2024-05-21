@@ -94,7 +94,7 @@ func DeleteProductFromCart(db ClientDb, userId string, productId uuid.UUID) erro
     if res, err := db.CartHasProduct(userId, productId); err != nil {
         return err
     } else if !res {
-        return nil
+        return errors.New("Product not in cart")
     } 
 
     return db.DeleteProductFromCart(userId, productId, productInfo.Price)
