@@ -110,6 +110,8 @@ func (handler *ClientHandler) CreateOrder(w http.ResponseWriter, r *http.Request
 
     userId := claims.Subject
 
+    log.Println("Creating order for user: ", userId, " with delivery adress: ", deliveryAdress)
+
     if err := usecases.CreateOrder(&handler.DataBase, userId, deliveryAdress); err != nil {
         w.WriteHeader(http.StatusInternalServerError)
         w.Write([]byte("Error creating order"))
