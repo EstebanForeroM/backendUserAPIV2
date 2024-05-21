@@ -69,7 +69,8 @@ func AddProductToCart(db ClientDb, userId string, productId uuid.UUID) error {
     if res, err := db.UserHasCart(userId); err != nil {
         return err
     } else if !res { 
-        db.AddCartToUser(userId)
+        err = db.AddCartToUser(userId)
+        if err != nil { return err }
     }
 
     if res, err := db.CartIsEmpty(userId); err != nil {

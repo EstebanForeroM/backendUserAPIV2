@@ -118,7 +118,12 @@ func (d *DataBase) DeleteProductFromCart(userId string, productId uuid.UUID, pri
         if err != nil { return err }
     }
 
-    cart.Update().SetTotalPrice(cart.TotalPrice - price).Save(ctx)
+
+    if cart.TotalPrice - price < 0 {
+        cart.Update().SetTotalPrice(0).Save(ctx)
+    } else {
+        cart.Update().SetTotalPrice(cart.TotalPrice - price).Save(ctx)
+    }
 
     return nil
 }
