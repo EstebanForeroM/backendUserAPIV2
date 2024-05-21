@@ -23,10 +23,11 @@ func NewDataBase() DataBase {
     }
 }
 
-func (d *DataBase) GetProductInfo(productId uuid.UUID) (usecases.Product, error) {
+func (d *DataBase) GetProductInfo(userId string, productId uuid.UUID) (usecases.Product, error) {
     ctx := context.Background()
 
-    productEnt, err := d.clientDb.Product.Query().Where(product.Pid(productId)).Only(ctx)
+    productEnt, err := d.clientDb.User.Query().Where(user.ID(userId)).
+        QueryCart().QueryProducts().Where(product.Pid(productId)).Only(ctx)
 
     if err != nil {
         return usecases.Product{}, err

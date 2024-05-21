@@ -22,7 +22,7 @@ type ClientDb interface {
     CartIsEmpty(userId string) (bool, error)
     DeleteCart(userId string) (error)
     CartHasProduct(userId string, productId uuid.UUID) (bool, error)
-    GetProductInfo(productId uuid.UUID) (Product, error)
+    GetProductInfo(userId string, productId uuid.UUID) (Product, error)
 }
 
 func GetOrders(db ClientDb, userId string) ([]Order, error) {
@@ -102,8 +102,8 @@ func DeleteProductFromCart(db ClientDb, userId string, productId uuid.UUID) erro
     return db.DeleteProductFromCart(userId, productId, productInfo.Price)
 }
 
-func GetProductInfo(db ClientDb, productId uuid.UUID) (Product, error) {
-    return db.GetProductInfo(productId)
+func GetProductInfo(db ClientDb,userId string, productId uuid.UUID) (Product, error) {
+    return db.GetProductInfo(userId, productId)
 }
 
 type User struct {

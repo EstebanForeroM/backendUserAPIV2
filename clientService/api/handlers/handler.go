@@ -18,6 +18,11 @@ type ClientHandler struct {
 func (handler *ClientHandler) GetProductInfo(w http.ResponseWriter, r *http.Request) {
     idString := r.PathValue("pid")
 
+    claims, _ := clerk.SessionClaimsFromContext(r.Context())
+
+    userId := claims.Subject
+
+
     puuid, err := uuid.Parse(idString)
 
     if err != nil {
@@ -26,7 +31,7 @@ func (handler *ClientHandler) GetProductInfo(w http.ResponseWriter, r *http.Requ
         return
     }
 
-    product, err := usecases.GetProductInfo(&handler.DataBase, puuid)
+    product, err := usecases.GetProductInfo(&handler.DataBase, userId, puuid)
 
     //if err != nil {
         //return

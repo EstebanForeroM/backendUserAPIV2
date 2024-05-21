@@ -19,8 +19,7 @@ func TestGetProductInfo(t *testing.T) {
 
     d.AddNewProductToCart("user_1", productID, 13)
 
-    if productInfo, err := d.GetProductInfo(productID); err != nil {
-        t.Error("Error getting product info: ", err)
+    if productInfo, err := d.GetProductInfo("user_1", productID); err != nil { t.Error("Error getting product info: ", err)
         return
     } else if productInfo.ProductQuantity != 1 {
         t.Error("Error getting product info, invalid product quantity: ", productInfo)
@@ -29,7 +28,7 @@ func TestGetProductInfo(t *testing.T) {
 
     d.AddProductToCart("user_1", productID, 13)
 
-    if productInfo, err := d.GetProductInfo(productID); err != nil {
+    if productInfo, err := d.GetProductInfo("user_1", productID); err != nil {
         t.Error("Error getting product info: ", err)
         return
     } else if productInfo.ProductQuantity != 2 {
