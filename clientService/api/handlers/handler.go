@@ -63,15 +63,16 @@ func (handler *ClientHandler) AddProductToCart(w http.ResponseWriter, r *http.Re
     idString := r.PathValue("pid") 
     puuid, err := uuid.Parse(idString)
 
-    claims, _ := clerk.SessionClaimsFromContext(r.Context())
-
-    userId := claims.Subject
-
     if err != nil {
         w.WriteHeader(http.StatusBadRequest)
         w.Write([]byte("Invalid product id"))
-        return 
+        log.Println(err)
+        return
     }
+
+    claims, _ := clerk.SessionClaimsFromContext(r.Context())
+
+    userId := claims.Subject 
 
     if err := usecases.AddProductToCart(&handler.DataBase, userId, puuid); err != nil {
         w.WriteHeader(http.StatusInternalServerError)

@@ -2,6 +2,7 @@ package database
 
 import (
 	"context"
+	"testing"
 
 	usecases "github.com/EstebanForeroM/backendUserAPIV2/clientService/useCases"
 	"github.com/EstebanForeroM/backendUserAPIV2/db"
@@ -305,4 +306,8 @@ func (d *DataBase) DeleteCart(userId string) (error) {
     d.clientDb.Cart.DeleteOne(cart).Exec(ctx)
 
     return err
+}
+
+func NewTestDataBase(t *testing.T) DataBase {
+    return DataBase{db.NewTestEntConnection(t)}
 }
