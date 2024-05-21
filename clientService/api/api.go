@@ -43,7 +43,7 @@ func GetMux() *http.ServeMux {
     ) 
 
     mux.Handle(
-        "POST /orders",
+        "POST /orders/{deliveryAdress}",
         clerkhttp.RequireHeaderAuthorization()(createOrderHandler),
     )
 

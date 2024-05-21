@@ -106,10 +106,11 @@ func (handler *ClientHandler) DeleteProductFromCart(w http.ResponseWriter, r *ht
 
 func (handler *ClientHandler) CreateOrder(w http.ResponseWriter, r *http.Request) {
     claims, _ := clerk.SessionClaimsFromContext(r.Context())
+    deliveryAdress := r.PathValue("deliveryAdress")
 
     userId := claims.Subject
 
-    if err := usecases.CreateOrder(&handler.DataBase, userId, "Calle 123"); err != nil {
+    if err := usecases.CreateOrder(&handler.DataBase, userId, deliveryAdress); err != nil {
         w.WriteHeader(http.StatusInternalServerError)
         w.Write([]byte("Error creating order"))
         log.Println(err, " ", userId)

@@ -80,8 +80,6 @@ func AddProductToCart(db ClientDb, userId string, productId uuid.UUID) error {
     } else {
         return db.AddNewProductToCart(userId, productId, productInfo.Price)
     }
-
-    return nil
 }
 
 func DeleteProductFromCart(db ClientDb, userId string, productId uuid.UUID) error {
