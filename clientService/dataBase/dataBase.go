@@ -111,6 +111,10 @@ func (d *DataBase) DeleteProductFromCart(userId string, productId uuid.UUID, pri
         err = d.clientDb.Product.DeleteOne(product).Exec(ctx)
 
         if err != nil { return err }
+
+        err = cart.Update().SetTotalPrice(0).Exec(ctx)
+
+        if err != nil { return err }
     } else {
         _, err = product.Update().SetQuantity(product.Quantity - 1).Save(ctx)
         
