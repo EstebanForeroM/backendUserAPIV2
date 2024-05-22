@@ -70,6 +70,7 @@ func (dataBase *DataBase) GetOrders() ([]usecases.Order, error) {
             UserId: currentUser.ID,
             Status: order.Status,
             DeliveryAdress: order.DeliveryAdress,
+            CreatedAt: order.OrderedAt,
             Products: products,
         })
     }

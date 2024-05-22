@@ -2,6 +2,7 @@ package usecases
 
 import (
 	"errors"
+	"time"
 
 	"github.com/EstebanForeroM/backendUserAPIV2/property"
 	"github.com/google/uuid"
@@ -111,6 +112,7 @@ type Order struct {
     UserId string
     Status property.Status
     DeliveryAdress string
+    CreatedAt time.Time
     Products []Product
 }
 
