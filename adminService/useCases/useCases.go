@@ -76,14 +76,19 @@ func GetOrderByStatus(db AdminDb, adminId string, status property.Status) ([]Ord
         return nil, err
     }
 
+    statusOrders := FilterOrdersByStatus(orders, status)
+
+    return statusOrders, nil
+}
+
+func FilterOrdersByStatus(orders []Order, status property.Status) []Order {
     var statusOrders []Order
     for _, order := range orders {
         if order.Status == status {
             statusOrders = append(statusOrders, order)
         }
     }
-
-    return statusOrders, nil
+    return statusOrders
 }
 
 func authorizeAdmin(db AdminDb, adminId string) (bool, error) {

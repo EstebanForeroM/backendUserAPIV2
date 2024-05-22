@@ -24,11 +24,17 @@ func GetMux() *http.ServeMux {
     getOrdersByUserIdHandler := http.HandlerFunc(handler.GetOrdersByUserId)
     getOrdersByStatusHandler := http.HandlerFunc(handler.GetOrdersByStatus)
     updateOrderStatusHandler := http.HandlerFunc(handler.UpdateOrderState)
+    getOrderByIdAndStatusHandler := http.HandlerFunc(handler.GetOrderByIdAndStatus)
 
     mux.Handle(
         "GET /orders",
         clerkhttp.RequireHeaderAuthorization()(getOrdersHandler),
-    ) 
+    )
+
+    mux.Handle(
+        "GET /orders/{userId}/status/{status}",
+        clerkhttp.RequireHeaderAuthorization()(getOrderByIdAndStatusHandler),
+    )
 
     mux.Handle(
         "GET /orders/{userId}",

@@ -85,6 +85,37 @@ func (handler *AdminHandler) GetOrdersByUserId(w http.ResponseWriter, r *http.Re
     json.NewEncoder(w).Encode(orders)
 }
 
+func (handler *AdminHandler) GetOrderByIdAndStatus(w http.ResponseWriter, r *http.Request) {
+    status := r.PathValue("status")
+    userId := r.PathValue("userId")
+
+    claims, _ := clerk.SessionClaimsFromContext(r.Context())
+
+    statusEnum, err := property.StringToStatus(status)
+
+    if err != nil {
+        log.Println(err)
+        w.WriteHeader(http.StatusBadRequest)
+        return
+    }
+
+    orders, err := usecases.GetOrderByUserId(&handler.DataBase, claims.Subject, userId)
+
+    if err != nil {
+        log.Println(err)
+        w.WriteHeader(http.StatusInternalServerError)
+        return
+    }
+
+    var userOrders []usecases.Order
+
+    userOrders = usecases.FilterOrdersByStatus(orders, statusEnum)
+
+    w.Header().Set("Content-Type", "application/json")
+    w.WriteHeader(http.StatusOK)
+    json.NewEncoder(w).Encode(userOrders)
+}
+
 func (handler *AdminHandler) GetOrdersByStatus(w http.ResponseWriter, r *http.Request) {
     status := r.PathValue("status")
 
