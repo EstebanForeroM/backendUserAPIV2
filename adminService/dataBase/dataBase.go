@@ -59,9 +59,15 @@ func (dataBase *DataBase) GetOrders() ([]usecases.Order, error) {
             return nil, err
         }
 
+        currentUser, err := order.QueryUser().Only(context.Background())
+
+        if err != nil {
+            return nil, err
+        }
+
         userOrders = append(userOrders, usecases.Order{
             OrderId: order.ID,
-            UserId: order.Edges.User.ID,
+            UserId: currentUser.ID,
             Status: order.Status,
             DeliveryAdress: order.DeliveryAdress,
             Products: products,
