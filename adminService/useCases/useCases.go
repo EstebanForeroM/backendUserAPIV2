@@ -2,6 +2,7 @@ package usecases
 
 import (
 	"errors"
+	"strings"
 	"time"
 
 	"github.com/EstebanForeroM/backendUserAPIV2/property"
@@ -54,7 +55,7 @@ func GetOrderByUserId(db AdminDb, adminId string, userId string) ([]Order, error
 
     var userOrders []Order
     for _, order := range orders {
-        if order.UserId == userId {
+        if strings.Contains(order.UserId, userId) {
             userOrders = append(userOrders, order)
         }
     }
