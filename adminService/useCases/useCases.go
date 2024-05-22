@@ -80,23 +80,28 @@ func GetOrderByStatus(db AdminDb, adminId string, status property.Status) ([]Ord
         return nil, err
     }
 
-    statusOrders := FilterOrdersByStatus(orders, status)
+    statusOrders, err := FilterOrdersByStatus(orders, status)
 
-    if len(statusOrders) == 0 {
-        return nil, errors.New("no orders found for status")
+    if err != nil {
+        return nil, err;
     }
 
     return statusOrders, nil
 }
 
-func FilterOrdersByStatus(orders []Order, status property.Status) []Order {
+func FilterOrdersByStatus(orders []Order, status property.Status) ([]Order, error) {
     var statusOrders []Order
     for _, order := range orders {
         if order.Status == status {
             statusOrders = append(statusOrders, order)
         }
     }
-    return statusOrders
+
+    if len(statusOrders) == 0 {
+        return nil, errors.New("no orders found for status")
+    }
+
+    return statusOrders, nil
 }
 
 func authorizeAdmin(db AdminDb, adminId string) (bool, error) {

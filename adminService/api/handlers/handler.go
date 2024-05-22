@@ -109,7 +109,13 @@ func (handler *AdminHandler) GetOrderByIdAndStatus(w http.ResponseWriter, r *htt
 
     var userOrders []usecases.Order
 
-    userOrders = usecases.FilterOrdersByStatus(orders, statusEnum)
+    userOrders, err = usecases.FilterOrdersByStatus(orders, statusEnum)
+
+    if err != nil {
+        log.Println(err)
+        w.WriteHeader(http.StatusInternalServerError)
+        return
+    }
 
     w.Header().Set("Content-Type", "application/json")
     w.WriteHeader(http.StatusOK)
