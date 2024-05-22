@@ -59,6 +59,10 @@ func GetOrderByUserId(db AdminDb, adminId string, userId string) ([]Order, error
         }
     }
 
+    if len(userOrders) == 0 {
+        return nil, errors.New("no orders found for user")
+    }
+
     return userOrders, nil
 }
 
@@ -77,6 +81,10 @@ func GetOrderByStatus(db AdminDb, adminId string, status property.Status) ([]Ord
     }
 
     statusOrders := FilterOrdersByStatus(orders, status)
+
+    if len(statusOrders) == 0 {
+        return nil, errors.New("no orders found for status")
+    }
 
     return statusOrders, nil
 }
